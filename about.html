@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Shubham Dekate</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #11111a;
+      --card: #16161f;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f59e0b;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --border: #2a2a3a;
+      --gradient: linear-gradient(135deg, #00e5ff 0%, #7c3aed 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(10,10,15,.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+    }
+    .nav-brand { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.2rem; color: var(--accent) !important; text-decoration: none; letter-spacing: -1px; }
+    .nav-brand span { color: var(--accent2); }
+    .nav-link { color: var(--muted) !important; font-weight: 600; font-size: .9rem; letter-spacing: .05em; text-transform: uppercase; padding: 8px 16px !important; transition: color .2s; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 50%; right: 50%; height: 2px; background: var(--accent); transition: left .2s, right .2s; }
+    .nav-link:hover { color: var(--text) !important; }
+    .nav-link:hover::after, .nav-link.active::after { left: 16px; right: 16px; }
+    .nav-link.active { color: var(--accent) !important; }
+    .nav-cta { background: var(--gradient); color: #fff !important; border-radius: 8px; padding: 8px 20px !important; }
+    .nav-cta::after { display: none; }
+    .hamburger-icon { border-color: var(--muted) !important; }
+    .hamburger-icon .navbar-toggler-icon { filter: invert(1); }
+
+    /* PAGE HERO */
+    .page-hero {
+      min-height: 50vh;
+      display: flex; align-items: center;
+      padding: 140px 0 80px;
+      position: relative; z-index: 1;
+    }
+    .page-hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: .85rem; color: var(--accent);
+      letter-spacing: .2em; text-transform: uppercase;
+      margin-bottom: 16px;
+      animation: fadeUp .5s .2s both;
+    }
+    .page-hero-title {
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: 20px;
+      animation: fadeUp .5s .35s both;
+    }
+    .page-hero-sub {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 520px; line-height: 1.7;
+      animation: fadeUp .5s .5s both;
+    }
+    .highlight { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* AVATAR */
+    .avatar-area {
+      display: flex; flex-direction: column; align-items: center;
+      animation: fadeIn .6s .6s both;
+    }
+    .avatar-ring {
+      width: 240px; height: 240px; border-radius: 50%;
+      background: var(--gradient);
+      padding: 3px; position: relative;
+      box-shadow: 0 0 60px rgba(0,229,255,.2);
+    }
+    .avatar-inner {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: var(--card);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; color: var(--accent);
+      overflow: hidden;
+    }
+    .status-badge {
+      margin-top: 20px;
+      background: rgba(34,197,94,.1);
+      border: 1px solid rgba(34,197,94,.3);
+      color: #22c55e;
+      padding: 8px 18px; border-radius: 100px;
+      font-size: .82rem; font-family: 'Space Mono', monospace;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse-dot 2s infinite; }
+
+    /* SECTION STYLES */
+    section { position: relative; z-index: 1; }
+    .section-tag { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--accent); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; margin-bottom: 16px; }
+
+    /* ABOUT BLOCK */
+    #about-story { padding: 80px 0; }
+    .about-text { font-size: 1rem; line-height: 1.85; color: var(--muted); }
+    .about-text p { margin-bottom: 18px; }
+    .about-text strong { color: var(--text); }
+    .about-text .accent-word { color: var(--accent); font-family: 'Space Mono', monospace; font-weight: 700; }
+
+    /* SKILLS GRID */
+    #skills-deep { padding: 80px 0; background: var(--bg2); }
+    .skill-category {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      height: 100%;
+      transition: border-color .3s;
+    }
+    .skill-category:hover { border-color: var(--accent); }
+    .skill-cat-title {
+      font-size: .9rem; font-weight: 700;
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .skill-list { list-style: none; padding: 0; }
+    .skill-list li {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      font-size: .9rem;
+    }
+    .skill-list li:last-child { border-bottom: none; }
+    .skill-dot-row { display: flex; gap: 4px; }
+    .s-dot { width: 8px; height: 8px; border-radius: 2px; background: var(--border); }
+    .s-dot.filled { background: var(--gradient-solid, var(--accent)); }
+
+    /* TOOLS */
+    .tool-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 100px; padding: 8px 16px;
+      font-size: .82rem; margin: 4px;
+      transition: border-color .2s, color .2s;
+    }
+    .tool-pill:hover { border-color: var(--accent); color: var(--accent); }
+    .tool-pill i { color: var(--accent2); }
+
+    /* VALUES */
+    #values { padding: 80px 0; }
+    .value-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      text-align: center;
+      height: 100%;
+      transition: transform .3s, border-color .3s;
+    }
+    .value-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+    .value-icon {
+      width: 60px; height: 60px; border-radius: 16px;
+      margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      background: var(--bg2);
+    }
+    .value-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+    .value-desc { font-size: .87rem; color: var(--muted); line-height: 1.7; }
+
+    /* EDUCATION */
+    #education { padding: 80px 0; background: var(--bg2); }
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      display: flex; gap: 20px;
+      align-items: flex-start;
+      transition: border-color .3s;
+      margin-bottom: 16px;
+    }
+    .edu-card:hover { border-color: var(--accent); }
+    .edu-icon {
+      width: 48px; height: 48px; min-width: 48px; border-radius: 12px;
+      background: rgba(0,229,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 1.4rem;
+    }
+    .edu-year { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--accent); margin-bottom: 6px; }
+    .edu-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .edu-inst { font-size: .88rem; color: var(--muted); }
+
+    /* DOWNLOAD CV */
+    #download-cv { padding: 80px 0; text-align: center; }
+    .cv-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 60px 40px;
+      position: relative; overflow: hidden;
+    }
+    .cv-box::before {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(124,58,237,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* FOOTER */
+    footer { background: var(--card); border-top: 1px solid var(--border); padding: 40px 0; text-align: center; }
+    .footer-social { display: flex; gap: 16px; justify-content: center; margin-bottom: 20px; }
+    .social-btn { width: 44px; height: 44px; border-radius: 12px; background: var(--bg2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); text-decoration: none; font-size: 1.1rem; transition: border-color .2s, color .2s; }
+    .social-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .footer-copy { font-size: .85rem; color: var(--muted); font-family: 'Space Mono', monospace; }
+
+    /* BUTTONS */
+    .btn-primary-custom { background: var(--gradient); color: #fff; border: none; padding: 14px 32px; border-radius: 10px; font-weight: 700; font-size: .95rem; letter-spacing: .03em; text-decoration: none; transition: transform .2s, box-shadow .2s; display: inline-block; }
+    .btn-primary-custom:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,229,255,.25); color: #fff; }
+    .btn-outline-custom { background: transparent; color: var(--text); border: 1px solid var(--border); padding: 14px 32px; border-radius: 10px; font-weight: 700; font-size: .95rem; text-decoration: none; transition: border-color .2s, color .2s; display: inline-block; }
+    .btn-outline-custom:hover { border-color: var(--accent); color: var(--accent); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="nav-brand navbar-brand" href="index.html">&lt;SD<span>/</span>&gt;</a>
+    <button class="navbar-toggler hamburger-icon border" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#projects">Projects</a></li>
+        <li class="nav-item ms-lg-2"><a class="nav-link nav-cta" href="contact.html">Hire Me</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <p class="page-hero-tag">// about me</p>
+        <h1 class="page-hero-title">
+          The Dev Behind<br>
+          the <span class="highlight">Code</span>
+        </h1>
+        <p class="page-hero-sub">9 years of crafting pixel-perfect, performant mobile experiences. Here's my story, my stack, and my philosophy.</p>
+      </div>
+      <div class="col-lg-4 offset-lg-1 mt-5 mt-lg-0">
+        <div class="avatar-area">
+          <div class="avatar-ring">
+            <div class="avatar-inner">
+              <i class="bi bi-person-fill"></i>
+            </div>
+          </div>
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            Available for projects
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MY STORY -->
+<section id="about-story">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5 mb-5 mb-lg-0">
+        <p class="section-tag">// origin story</p>
+        <h2 class="section-title">From curiosity<br>to <span class="highlight">craft</span></h2>
+        <!-- Quick facts -->
+        <div class="mt-4 d-flex flex-column gap-3">
+          <div style="display:flex;align-items:center;gap:12px;font-size:.9rem;">
+            <i class="bi bi-geo-alt" style="color:var(--accent);"></i>
+            <span style="color:var(--muted);">Pune, Maharashtra, India</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:.9rem;">
+            <i class="bi bi-briefcase" style="color:var(--accent);"></i>
+            <span style="color:var(--muted);">Open to Remote & On-site roles</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:.9rem;">
+            <i class="bi bi-globe2" style="color:var(--accent);"></i>
+            <span style="color:var(--muted);">English, Hindi, Marathi</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:.9rem;">
+            <i class="bi bi-mortarboard" style="color:var(--accent);"></i>
+            <span style="color:var(--muted);">B.E. Computer Science</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="about-text">
+          <p>I'm <strong>Shubham Dekate</strong>, a Mobile App Developer with <span class="accent-word">9+ years</span> of experience building Android and Flutter applications that users love. My journey started back in 2015 when I wrote my first Android app — a simple calculator — and got completely hooked on the magic of tapping a screen and seeing code come alive.</p>
+          <p>Over the years, I've grown from writing Java to mastering <strong>Kotlin</strong>, from XML layouts to <strong>Jetpack Compose</strong>, and from single-platform to cross-platform with <strong>Flutter and KMM</strong>. Each project taught me that great apps aren't just about code — they're about <strong>empathy for the user</strong>, obsession with performance, and a commitment to clean architecture.</p>
+          <p>Today I specialize in complex Android applications, scalable Flutter products, and backend APIs powered by <strong>Ktor</strong>. I've shipped apps downloaded by millions, led engineering teams, and mentored developers early in their careers. When I'm not coding, I contribute to open source, write technical articles, and explore the intersection of mobile and emerging tech.</p>
+          <p>My philosophy: <span class="accent-word">// clean code is a love letter to your future self.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEEP SKILLS -->
+<section id="skills-deep">
+  <div class="container">
+    <div class="mb-5">
+      <p class="section-tag">// full tech stack</p>
+      <h2 class="section-title">Skills & <span class="highlight">Expertise</span></h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="skill-category">
+          <div class="skill-cat-title"><i class="bi bi-android2"></i> Android</div>
+          <ul class="skill-list">
+            <li>Jetpack Compose <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div></div></li>
+            <li>MVVM + Clean Arch <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div></div></li>
+            <li>Room Database <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>WorkManager <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>Navigation Compose <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div></div></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="skill-category">
+          <div class="skill-cat-title"><i class="bi bi-phone"></i> Flutter</div>
+          <ul class="skill-list">
+            <li>Bloc / Riverpod <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div></div></li>
+            <li>Custom Animations <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>Platform Channels <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>Flutter Web <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div><div class="s-dot"></div></div></li>
+            <li>GetX <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="skill-category">
+          <div class="skill-cat-title"><i class="bi bi-code-slash"></i> Kotlin</div>
+          <ul class="skill-list">
+            <li>Coroutines / Flow <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div></div></li>
+            <li>KMM <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>Extension Functions <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div></div></li>
+            <li>DSL Design <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div><div class="s-dot"></div></div></li>
+            <li>Serialization <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="skill-category">
+          <div class="skill-cat-title"><i class="bi bi-server"></i> Backend</div>
+          <ul class="skill-list">
+            <li>Ktor Framework <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>Exposed ORM <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>REST API Design <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>PostgreSQL <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot"></div></div></li>
+            <li>Firebase <div class="skill-dot-row"><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div><div class="s-dot filled"></div></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tools -->
+    <div class="mt-5">
+      <p class="section-tag mb-3">// tools & platforms</p>
+      <div>
+        <span class="tool-pill"><i class="bi bi-android2"></i> Android Studio</span>
+        <span class="tool-pill"><i class="bi bi-phone"></i> VS Code</span>
+        <span class="tool-pill"><i class="bi bi-git"></i> Git / GitHub</span>
+        <span class="tool-pill"><i class="bi bi-cloud"></i> Firebase</span>
+        <span class="tool-pill"><i class="bi bi-boxes"></i> Gradle</span>
+        <span class="tool-pill"><i class="bi bi-bug"></i> Crashlytics</span>
+        <span class="tool-pill"><i class="bi bi-bar-chart"></i> Analytics</span>
+        <span class="tool-pill"><i class="bi bi-layers"></i> Figma</span>
+        <span class="tool-pill"><i class="bi bi-layout-split"></i> Jira</span>
+        <span class="tool-pill"><i class="bi bi-hash"></i> Slack</span>
+        <span class="tool-pill"><i class="bi bi-box-seam"></i> Docker</span>
+        <span class="tool-pill"><i class="bi bi-play-circle"></i> Play Console</span>
+        <span class="tool-pill"><i class="bi bi-apple"></i> App Store Connect</span>
+        <span class="tool-pill"><i class="bi bi-shield-check"></i> Fastlane</span>
+        <span class="tool-pill"><i class="bi bi-arrow-repeat"></i> CI/CD</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section id="values">
+  <div class="container">
+    <div class="mb-5">
+      <p class="section-tag">// what drives me</p>
+      <h2 class="section-title">My <span class="highlight">Philosophy</span></h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-3">
+        <div class="value-card">
+          <div class="value-icon" style="color:var(--accent)"><i class="bi bi-lightning-charge"></i></div>
+          <div class="value-title">Performance First</div>
+          <div class="value-desc">Every millisecond matters. I obsess over cold start times, smooth 60fps animations, and minimal battery drain.</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="value-card">
+          <div class="value-icon" style="color:var(--accent2)"><i class="bi bi-layers"></i></div>
+          <div class="value-title">Clean Architecture</div>
+          <div class="value-desc">Separation of concerns, SOLID principles, and testable code. Built to evolve, not to rewrite.</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="value-card">
+          <div class="value-icon" style="color:var(--accent3)"><i class="bi bi-people"></i></div>
+          <div class="value-title">User Empathy</div>
+          <div class="value-desc">I build for humans. Accessibility, intuitive UX, and delight in the small details make apps people love.</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="value-card">
+          <div class="value-icon" style="color:#22c55e"><i class="bi bi-arrow-repeat"></i></div>
+          <div class="value-title">Ship & Iterate</div>
+          <div class="value-desc">Perfect is the enemy of shipped. I believe in small, frequent releases backed by analytics and user feedback.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-5 mb-lg-0">
+        <p class="section-tag">// academics & certs</p>
+        <h2 class="section-title">Education &<br><span class="highlight">Credentials</span></h2>
+        <p style="color:var(--muted);font-size:.9rem;line-height:1.7;margin-top:12px;">Formal education combined with continuous self-learning through courses, conferences, and open-source.</p>
+      </div>
+      <div class="col-lg-7 offset-lg-1">
+        <div class="edu-card">
+          <div class="edu-icon"><i class="bi bi-mortarboard-fill"></i></div>
+          <div>
+            <div class="edu-year">2011 — 2015</div>
+            <div class="edu-title">B.E. Computer Science & Engineering</div>
+            <div class="edu-inst">RTMNU, Nagpur, Maharashtra</div>
+          </div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon"><i class="bi bi-award-fill"></i></div>
+          <div>
+            <div class="edu-year">2023</div>
+            <div class="edu-title">Google Associate Android Developer</div>
+            <div class="edu-inst">Google Developer Certification</div>
+          </div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon"><i class="bi bi-patch-check-fill"></i></div>
+          <div>
+            <div class="edu-year">2022</div>
+            <div class="edu-title">Flutter & Dart — The Complete Guide</div>
+            <div class="edu-inst">Udemy — Maximilian Schwarzmüller</div>
+          </div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon"><i class="bi bi-patch-check-fill"></i></div>
+          <div>
+            <div class="edu-year">2021</div>
+            <div class="edu-title">Kotlin for Android Developers</div>
+            <div class="edu-inst">JetBrains Academy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD CV -->
+<section id="download-cv">
+  <div class="container">
+    <div class="cv-box">
+      <p class="section-tag" style="text-align:center;">// let's connect</p>
+      <h2 class="section-title text-center">Want the full picture?</h2>
+      <p style="color:var(--muted);text-align:center;margin-bottom:36px;">Download my detailed resume or reach out directly to discuss your next project.</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="#" class="btn-primary-custom"><i class="bi bi-download me-2"></i>Download Resume</a>
+        <a href="contact.html" class="btn-outline-custom"><i class="bi bi-envelope me-2"></i>Get In Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-social">
+      <a href="#" class="social-btn"><i class="bi bi-github"></i></a>
+      <a href="#" class="social-btn"><i class="bi bi-linkedin"></i></a>
+      <a href="#" class="social-btn"><i class="bi bi-twitter-x"></i></a>
+      <a href="#" class="social-btn"><i class="bi bi-envelope"></i></a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Shubham Dekate — Built with passion &amp; Kotlin ☕</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.background = window.scrollY > 60 ? 'rgba(10,10,15,.97)' : 'rgba(10,10,15,.85)';
+  });
+</script>
+</body>
+</html>
