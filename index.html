@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shubham Dekate — Mobile App Developer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #11111a;
+      --card: #16161f;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f59e0b;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --border: #2a2a3a;
+      --gradient: linear-gradient(135deg, #00e5ff 0%, #7c3aed 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(0,229,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,.03) 1px, transparent 1px);
+      background-size: 60px 60px; pointer-events: none; z-index: 0;
+    }
+
+    /* NAV */
+    nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(10,10,15,.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 18px 0; transition: all .3s; }
+    .nav-brand { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.2rem; color: var(--accent) !important; text-decoration: none; letter-spacing: -1px; }
+    .nav-brand span { color: var(--accent2); }
+    .nav-link { color: var(--muted) !important; font-weight: 600; font-size: .9rem; letter-spacing: .05em; text-transform: uppercase; padding: 8px 16px !important; transition: color .2s; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 50%; right: 50%; height: 2px; background: var(--accent); transition: left .2s, right .2s; }
+    .nav-link:hover { color: var(--text) !important; }
+    .nav-link:hover::after, .nav-link.active::after { left: 16px; right: 16px; }
+    .nav-link.active { color: var(--accent) !important; }
+    .nav-cta { background: var(--gradient); color: #fff !important; border-radius: 8px; padding: 8px 20px !important; }
+    .nav-cta::after { display: none; }
+    .hamburger-icon { border-color: var(--muted) !important; }
+    .hamburger-icon .navbar-toggler-icon { filter: invert(1); }
+
+    /* HERO */
+    #hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px; position: relative; }
+    .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: .85rem; color: var(--accent); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 16px; opacity: 0; animation: fadeUp .6s .2s forwards; }
+    .hero-title { font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 800; line-height: 1.05; margin-bottom: 24px; opacity: 0; animation: fadeUp .6s .4s forwards; }
+    .hero-title .highlight { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 520px; line-height: 1.7; margin-bottom: 40px; opacity: 0; animation: fadeUp .6s .6s forwards; }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; opacity: 0; animation: fadeUp .6s .7s forwards; }
+    .badge-tech {
+      background: var(--card); border: 1px solid var(--border); color: var(--text);
+      padding: 7px 14px; border-radius: 100px;
+      font-family: 'Space Mono', monospace; font-size: .78rem; letter-spacing: .04em;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color .2s, transform .2s; cursor: default;
+    }
+    .badge-tech:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .badge-tech svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 14px; opacity: 0; animation: fadeUp .6s .9s forwards; }
+    .btn-primary-custom { background: var(--gradient); color: #fff; border: none; padding: 14px 32px; border-radius: 10px; font-weight: 700; font-size: .95rem; letter-spacing: .03em; text-decoration: none; transition: transform .2s, box-shadow .2s; display: inline-block; }
+    .btn-primary-custom:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,229,255,.25); color: #fff; }
+    .btn-outline-custom { background: transparent; color: var(--text); border: 1px solid var(--border); padding: 14px 32px; border-radius: 10px; font-weight: 700; font-size: .95rem; text-decoration: none; transition: border-color .2s, color .2s; display: inline-block; }
+    .btn-outline-custom:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* PHONE VISUAL */
+    .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; opacity: 0; animation: fadeIn .8s 1s forwards; }
+    .phone-mockup { width: 230px; background: var(--card); border: 1px solid var(--border); border-radius: 38px; padding: 14px; box-shadow: 0 40px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05); position: relative; z-index: 2; }
+    .phone-screen { background: var(--bg2); border-radius: 26px; padding: 18px 14px; min-height: 390px; overflow: hidden; }
+    .phone-notch { width: 60px; height: 6px; background: var(--border); border-radius: 3px; margin: 0 auto 18px; }
+    .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .app-icon-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .app-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .app-icon svg { width: 26px; height: 26px; }
+    .app-label { font-size: 7.5px; color: var(--muted); font-family: 'Space Mono', monospace; text-align: center; }
+    .phone-divider { height: 1px; background: var(--border); margin: 10px 0 12px; opacity: .5; }
+    .phone-mini-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .phone-mini-icon { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .phone-mini-icon svg { width: 16px; height: 16px; }
+    .phone-mini-text { flex: 1; }
+    .phone-mini-text .line1 { height: 7px; background: var(--border); border-radius: 3px; width: 80%; margin-bottom: 4px; }
+    .phone-mini-text .line2 { height: 5px; background: var(--border); border-radius: 3px; width: 50%; opacity: .5; }
+
+    .floating-card { position: absolute; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 10px 14px; font-size: .75rem; font-family: 'Space Mono', monospace; white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,.4); display: flex; align-items: center; gap: 8px; z-index: 3; }
+    .fc1 { top: 8%; right: -10%; animation: float 4s ease-in-out infinite; }
+    .fc2 { bottom: 18%; left: -14%; animation: float 4s ease-in-out 2s infinite; }
+    .fc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* STATS */
+    .stats-strip { background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 40px 0; position: relative; z-index: 1; }
+    .stat-item { text-align: center; padding: 10px; }
+    .stat-number { font-size: 2.8rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+    .stat-label { font-size: .85rem; color: var(--muted); margin-top: 6px; font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: .1em; }
+
+    /* SECTIONS */
+    section { position: relative; z-index: 1; }
+    .section-tag { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--accent); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: 16px; }
+    .section-sub { color: var(--muted); max-width: 520px; line-height: 1.7; }
+
+    /* SKILLS */
+    #skills { padding: 100px 0; }
+    .skill-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; height: 100%; transition: border-color .3s, transform .3s; position: relative; overflow: hidden; }
+    .skill-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,229,255,.05), transparent); opacity: 0; transition: opacity .3s; }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .skill-card:hover::before { opacity: 1; }
+    .skill-icon-box { width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .skill-icon-box svg { width: 36px; height: 36px; }
+    .skill-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .skill-desc { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+    .skill-bar-wrap { margin-top: 16px; }
+    .skill-bar-label { display: flex; justify-content: space-between; font-size: .78rem; font-family: 'Space Mono', monospace; color: var(--muted); margin-bottom: 6px; }
+    .skill-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .skill-bar-fill { height: 100%; border-radius: 2px; background: var(--gradient); }
+
+    /* TECH LOGOS */
+    #tech-logos { padding: 20px 0 100px; }
+    .tech-logos-row { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+    .tech-pill {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 12px 20px; display: inline-flex; align-items: center; gap: 10px;
+      transition: border-color .25s, transform .25s, box-shadow .25s; cursor: default;
+    }
+    .tech-pill:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,.35); }
+    .tech-pill svg { width: 28px; height: 28px; flex-shrink: 0; }
+    .tech-pill span { font-size: .85rem; font-weight: 700; font-family: 'Space Mono', monospace; color: var(--text); white-space: nowrap; }
+
+    /* PROJECTS */
+    #projects { padding: 100px 0; background: var(--bg2); }
+    .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; height: 100%; transition: transform .3s, box-shadow .3s; }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+    .project-thumb { height: 180px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .project-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 50%, var(--card)); }
+    .thumb-svg { position: relative; z-index: 1; width: 72px; height: 72px; filter: drop-shadow(0 4px 20px rgba(0,0,0,.5)); }
+    .p1 { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); }
+    .p2 { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+    .p3 { background: linear-gradient(135deg, #0d1b2a, #1b3a5c, #0d1b2a); }
+    .p4 { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); }
+    .p5 { background: linear-gradient(135deg, #0a2a1a, #0f5132, #0a2a1a); }
+    .p6 { background: linear-gradient(135deg, #1a1a2e, #2d3160, #1a1a2e); }
+    .project-body { padding: 24px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .p-tag { font-size: .7rem; font-family: 'Space Mono', monospace; padding: 4px 10px; border-radius: 100px; border: 1px solid; display: inline-flex; align-items: center; gap: 4px; }
+    .p-tag svg { width: 10px; height: 10px; }
+    .t-android { background: rgba(61,220,132,.1); color: #3ddc84; border-color: rgba(61,220,132,.25); }
+    .t-flutter { background: rgba(84,182,255,.1); color: #54b6ff; border-color: rgba(84,182,255,.25); }
+    .t-kotlin  { background: rgba(167,97,255,.1);  color: #a761ff; border-color: rgba(167,97,255,.25); }
+    .t-ktor    { background: rgba(8,124,250,.12);  color: #60b0ff; border-color: rgba(8,124,250,.3); }
+    .t-firebase{ background: rgba(255,202,40,.1);  color: #ffca28; border-color: rgba(255,202,40,.25); }
+    .t-default { background: rgba(0,229,255,.08);  color: var(--accent); border-color: rgba(0,229,255,.2); }
+    .project-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .project-desc { font-size: .85rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .project-links { display: flex; gap: 14px; }
+    .p-link { font-size: .82rem; font-weight: 600; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: color .2s; }
+    .p-link:hover { color: var(--accent); }
+    .p-link svg { width: 14px; height: 14px; }
+
+    /* TIMELINE */
+    #experience { padding: 100px 0; }
+    .timeline { position: relative; padding-left: 40px; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
+    .tl-item { position: relative; margin-bottom: 40px; }
+    .tl-dot { position: absolute; left: -48px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--gradient); border: 2px solid var(--bg); box-shadow: 0 0 0 4px rgba(0,229,255,.15); }
+    .tl-year { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--accent); letter-spacing: .1em; margin-bottom: 6px; }
+    .tl-role { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .tl-company { font-size: .9rem; color: var(--muted); margin-bottom: 10px; }
+    .tl-desc { font-size: .87rem; color: var(--muted); line-height: 1.7; }
+
+    /* CTA */
+    #cta { padding: 100px 0; text-align: center; }
+    .cta-box { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 70px 40px; position: relative; overflow: hidden; }
+    .cta-box::before { content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,229,255,.08) 0%, transparent 70%); pointer-events: none; }
+    .cta-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: 16px; }
+    .cta-sub { color: var(--muted); margin-bottom: 36px; }
+
+    /* FOOTER */
+    footer { background: var(--card); border-top: 1px solid var(--border); padding: 40px 0; text-align: center; }
+    .footer-social { display: flex; gap: 16px; justify-content: center; margin-bottom: 20px; }
+    .social-btn { width: 44px; height: 44px; border-radius: 12px; background: var(--bg2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); text-decoration: none; font-size: 1.1rem; transition: border-color .2s, color .2s; }
+    .social-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .footer-copy { font-size: .85rem; color: var(--muted); font-family: 'Space Mono', monospace; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @media (max-width: 768px) { .hero-visual { margin-top: 60px; } .fc1, .fc2 { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- SVG SYMBOL DEFS (reusable) -->
+<svg width="0" height="0" style="position:absolute" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Android -->
+    <symbol id="ico-android" viewBox="0 0 24 24">
+      <path d="M17.523 15.342c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm-11.046 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zM17.78 8.5l1.94-3.36a.4.4 0 0 0-.693-.4L17.06 8.14A11.04 11.04 0 0 0 12 7c-1.79 0-3.48.43-4.96 1.14L5.07 4.74a.4.4 0 0 0-.693.4L6.32 8.5C3.73 10.05 2 12.82 2 16h20c0-3.18-1.73-5.95-4.22-7.5z" fill="#3DDC84"/>
+    </symbol>
+    <!-- Flutter -->
+    <symbol id="ico-flutter" viewBox="0 0 24 24">
+      <path d="M14.314 0L2.3 12 6 15.7 21.684.012h-7.37z" fill="#54C5F8"/>
+      <path d="M14.3 15l-4.4 4.3 4.4 4.4 4.4-4.4L14.3 15z" fill="#29B6F6"/>
+      <path d="M9.9 19.3l4.4 4.4h8.9l-4.4-4.4H9.9z" fill="#01579B"/>
+      <path d="M9.9 19.3l4.4-4.3-2.6-2.6L6 15.7l3.9 3.6z" fill="#054A7F"/>
+    </symbol>
+    <!-- Kotlin -->
+    <symbol id="ico-kotlin" viewBox="0 0 24 24">
+      <path d="M24 24H0V0h24L12 12z" fill="url(#kg-a)"/>
+      <path d="M0 24L12 12 24 24z" fill="url(#kg-b)"/>
+      <path d="M0 0l12 12L0 24z" fill="url(#kg-c)"/>
+      <linearGradient id="kg-a" x1="24" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#E44857"/><stop offset=".47" stop-color="#C711E1"/><stop offset="1" stop-color="#7F52FF"/>
+      </linearGradient>
+      <linearGradient id="kg-b" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#0095D5"/><stop offset="1" stop-color="#7F52FF"/>
+      </linearGradient>
+      <linearGradient id="kg-c" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#0095D5"/><stop offset="1" stop-color="#C711E1"/>
+      </linearGradient>
+    </symbol>
+    <!-- Firebase -->
+    <symbol id="ico-firebase" viewBox="0 0 24 24">
+      <path d="M3.611 18.605l.303-.208 6.448-10.054L7.696 3.78a.55.55 0 0 0-.978.014L3.611 18.605z" fill="#FFA000"/>
+      <path d="M5.109 20.065l.225-.139 8.436-8.282-1.49-4.631L5.109 20.065z" fill="#F57F17"/>
+      <path d="M12.5 23l6.5-3.617-1.837-11.406L12.5 23z" fill="#FFCA28"/>
+      <path d="M3.5 19.384l.225-.14 8.436-8.281L9.693 5.332 3.5 19.384z" fill="#FFA000"/>
+      <path d="M12.5 23L6 19.383l6.163-14.051 1.5 4.636 3.337-5.22L12.5 23z" fill="#FFCA28"/>
+    </symbol>
+    <!-- Ktor -->
+    <symbol id="ico-ktor" viewBox="0 0 24 24">
+      <rect width="24" height="24" rx="5" fill="#087CFA"/>
+      <path d="M4 12l8-8 8 8-8 8-8-8z" fill="white" opacity=".9"/>
+      <path d="M8.5 12l3.5-3.5 3.5 3.5-3.5 3.5L8.5 12z" fill="#087CFA"/>
+    </symbol>
+    <!-- Play Store -->
+    <symbol id="ico-playstore" viewBox="0 0 24 24">
+      <path d="M3.18 23.76c.38.21.82.22 1.21.03L17.44 12 4.39.21C4 .02 3.56.03 3.18.24 2.8.45 2.57.85 2.57 1.3v21.4c0 .45.23.85.61 1.06z" fill="#4285F4"/>
+      <path d="M21.23 10.72L18.6 9.27 15.11 12l3.49 2.73 2.63-1.45c.75-.41.75-1.56 0-1.97z" fill="#FBBC04"/>
+      <path d="M3.18.24L15.11 12 18.6 9.27 5.24.11C4.85-.12 4.38-.08 4.03.1z" fill="#EA4335"/>
+      <path d="M3.18 23.76l.85.14c.35.18.82.22 1.21.01L18.6 14.73l-3.49-2.73L3.18 23.76z" fill="#34A853"/>
+    </symbol>
+    <!-- GitHub -->
+    <symbol id="ico-github" viewBox="0 0 24 24">
+      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" fill="white"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="nav-brand navbar-brand" href="index.html">&lt;SD<span>/</span>&gt;</a>
+    <button class="navbar-toggler hamburger-icon border" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+        <li class="nav-item ms-lg-2"><a class="nav-link nav-cta" href="contact.html">Hire Me</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <p class="hero-eyebrow">&#x2022; Available for new projects</p>
+        <h1 class="hero-title">Hi, I'm <span class="highlight">Shubham</span><br>Mobile App<br>Developer</h1>
+        <p class="hero-sub">Crafting high-performance Android &amp; Flutter applications for 9+ years. I turn complex ideas into elegant, user-first mobile experiences.</p>
+
+        <div class="hero-badges">
+          <span class="badge-tech"><svg><use href="#ico-android"/></svg>Android</span>
+          <span class="badge-tech"><svg><use href="#ico-flutter"/></svg>Flutter</span>
+          <span class="badge-tech"><svg><use href="#ico-kotlin"/></svg>Kotlin</span>
+          <span class="badge-tech"><svg><use href="#ico-ktor"/></svg>Ktor</span>
+          <span class="badge-tech"><svg><use href="#ico-firebase"/></svg>Firebase</span>
+        </div>
+
+        <div class="hero-btns">
+          <a href="#projects" class="btn-primary-custom">View My Work</a>
+          <a href="about.html" class="btn-outline-custom">About Me</a>
+        </div>
+      </div>
+
+      <!-- Phone mockup -->
+      <div class="col-lg-5">
+        <div class="hero-visual">
+          <div class="phone-mockup">
+            <div class="phone-screen">
+              <div class="phone-notch"></div>
+              <!-- App icon grid -->
+              <div class="app-grid">
+                <div class="app-icon-wrap">
+                  <div class="app-icon" style="background:rgba(61,220,132,.15)"><svg><use href="#ico-android"/></svg></div>
+                  <div class="app-label">Android</div>
+                </div>
+                <div class="app-icon-wrap">
+                  <div class="app-icon" style="background:rgba(84,182,255,.12)"><svg><use href="#ico-flutter"/></svg></div>
+                  <div class="app-label">Flutter</div>
+                </div>
+                <div class="app-icon-wrap">
+                  <div class="app-icon" style="background:rgba(167,97,255,.12)"><svg><use href="#ico-kotlin"/></svg></div>
+                  <div class="app-label">Kotlin</div>
+                </div>
+                <div class="app-icon-wrap">
+                  <div class="app-icon" style="background:rgba(255,202,40,.1)"><svg><use href="#ico-firebase"/></svg></div>
+                  <div class="app-label">Firebase</div>
+                </div>
+                <div class="app-icon-wrap">
+                  <div class="app-icon" style="background:rgba(8,124,250,.15)"><svg><use href="#ico-ktor"/></svg></div>
+                  <div class="app-label">Ktor</div>
+                </div>
+                <div class="app-icon-wrap">
+                  <div class="app-icon" style="background:rgba(255,255,255,.05)"><svg><use href="#ico-playstore"/></svg></div>
+                  <div class="app-label">Play Store</div>
+                </div>
+              </div>
+              <div class="phone-divider"></div>
+              <div class="phone-mini-row">
+                <div class="phone-mini-icon" style="background:rgba(61,220,132,.12)"><svg><use href="#ico-android"/></svg></div>
+                <div class="phone-mini-text"><div class="line1"></div><div class="line2"></div></div>
+              </div>
+              <div class="phone-mini-row">
+                <div class="phone-mini-icon" style="background:rgba(84,182,255,.12)"><svg><use href="#ico-flutter"/></svg></div>
+                <div class="phone-mini-text"><div class="line1"></div><div class="line2"></div></div>
+              </div>
+              <div class="phone-mini-row">
+                <div class="phone-mini-icon" style="background:rgba(255,202,40,.1)"><svg><use href="#ico-firebase"/></svg></div>
+                <div class="phone-mini-text"><div class="line1"></div><div class="line2"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="floating-card fc1">
+            <span class="fc-dot" style="background:#3ddc84"></span>
+            <svg width="14" height="14"><use href="#ico-android"/></svg>
+            Kotlin Expert
+          </div>
+          <div class="floating-card fc2">
+            <span class="fc-dot" style="background:#54b6ff"></span>
+            <svg width="14" height="14"><use href="#ico-flutter"/></svg>
+            50+ Apps Shipped
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-number">9+</div><div class="stat-label">Years Experience</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-number">50+</div><div class="stat-label">Apps Delivered</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-number">20+</div><div class="stat-label">Happy Clients</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-item"><div class="stat-number">10M+</div><div class="stat-label">App Downloads</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-12">
+        <p class="section-tag">// technical expertise</p>
+        <h2 class="section-title">My <span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Core Stack</span></h2>
+        <p class="section-sub">Battle-tested across hundreds of production apps, from startup MVPs to enterprise-scale solutions.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="skill-card">
+          <div class="skill-icon-box" style="background:rgba(61,220,132,.12)">
+            <svg viewBox="0 0 24 24"><use href="#ico-android"/></svg>
+          </div>
+          <div class="skill-name">Android Native</div>
+          <div class="skill-desc">Deep expertise in Jetpack Compose, MVVM, Room, WorkManager, and the full Android SDK ecosystem.</div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>Proficiency</span><span>97%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:97%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="skill-card">
+          <div class="skill-icon-box" style="background:rgba(84,182,255,.12)">
+            <svg viewBox="0 0 24 24"><use href="#ico-flutter"/></svg>
+          </div>
+          <div class="skill-name">Flutter / Dart</div>
+          <div class="skill-desc">Cross-platform mastery with Bloc, Riverpod, custom animations, and platform channels for native bridges.</div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>Proficiency</span><span>92%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:92%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="skill-card">
+          <div class="skill-icon-box" style="background:rgba(167,97,255,.12)">
+            <svg viewBox="0 0 24 24"><use href="#ico-kotlin"/></svg>
+          </div>
+          <div class="skill-name">Kotlin</div>
+          <div class="skill-desc">Coroutines, Flow, DSLs, multiplatform (KMM) — leveraging Kotlin's full power for clean, concise code.</div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>Proficiency</span><span>95%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:95%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="skill-card">
+          <div class="skill-icon-box" style="background:rgba(8,124,250,.12)">
+            <svg viewBox="0 0 24 24"><use href="#ico-ktor"/></svg>
+          </div>
+          <div class="skill-name">Ktor Backend</div>
+          <div class="skill-desc">Building REST APIs, WebSocket services, and microservices with Ktor, Exposed ORM, and PostgreSQL.</div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>Proficiency</span><span>85%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH LOGOS -->
+<section id="tech-logos">
+  <div class="container">
+    <p class="section-tag mb-4">// full technology radar</p>
+    <div class="tech-logos-row">
+
+      <div class="tech-pill"><svg viewBox="0 0 24 24"><use href="#ico-android"/></svg><span>Android</span></div>
+      <div class="tech-pill"><svg viewBox="0 0 24 24"><use href="#ico-flutter"/></svg><span>Flutter</span></div>
+      <div class="tech-pill"><svg viewBox="0 0 24 24"><use href="#ico-kotlin"/></svg><span>Kotlin</span></div>
+      <div class="tech-pill"><svg viewBox="0 0 24 24"><use href="#ico-ktor"/></svg><span>Ktor</span></div>
+      <div class="tech-pill"><svg viewBox="0 0 24 24"><use href="#ico-firebase"/></svg><span>Firebase</span></div>
+
+      <!-- Jetpack Compose -->
+      <div class="tech-pill">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <rect width="24" height="24" rx="5" fill="#4285F4"/>
+          <path d="M12 4l7 4v8l-7 4-7-4V8z" fill="none" stroke="white" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="2.5" fill="white"/>
+        </svg>
+        <span>Jetpack Compose</span>
+      </div>
+
+      <!-- Dart -->
+      <div class="tech-pill">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <path d="M4.105 4.105S9.158 1.58 11.684.316a3.079 3.079 0 0 1 1.481-.316c.766.047 1.677.788 1.677.788L24 9.948v9.789h-4.263V24H9.789l-9-9c0 0-.789-1.037-.789-2.277C0 11.422 4.105 4.105 4.105 4.105z" fill="#00B4AB"/>
+        </svg>
+        <span>Dart</span>
+      </div>
+
+      <!-- Play Store -->
+      <div class="tech-pill"><svg viewBox="0 0 24 24"><use href="#ico-playstore"/></svg><span>Play Store</span></div>
+
+      <!-- GitHub -->
+      <div class="tech-pill" style="background:#161b22;border-color:#30363d">
+        <svg viewBox="0 0 24 24" width="28" height="28"><use href="#ico-github"/></svg>
+        <span>GitHub</span>
+      </div>
+
+      <!-- Room DB -->
+      <div class="tech-pill">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <rect width="24" height="24" rx="5" fill="#1565C0"/>
+          <ellipse cx="12" cy="7.5" rx="6" ry="2.5" fill="none" stroke="white" stroke-width="1.5"/>
+          <path d="M6 7.5v4c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5v-4" stroke="white" stroke-width="1.5" fill="none"/>
+          <path d="M6 11.5v4c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5v-4" stroke="white" stroke-width="1.5" fill="none"/>
+        </svg>
+        <span>Room DB</span>
+      </div>
+
+      <!-- GraphQL -->
+      <div class="tech-pill">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <path d="M12 2l9.526 5.5v11L12 24 2.474 18.5v-11z" fill="none" stroke="#E535AB" stroke-width="1.5"/>
+          <circle cx="12" cy="2" r="2" fill="#E535AB"/>
+          <circle cx="21.5" cy="7.5" r="2" fill="#E535AB"/>
+          <circle cx="21.5" cy="16.5" r="2" fill="#E535AB"/>
+          <circle cx="12" cy="22" r="2" fill="#E535AB"/>
+          <circle cx="2.5" cy="16.5" r="2" fill="#E535AB"/>
+          <circle cx="2.5" cy="7.5" r="2" fill="#E535AB"/>
+          <line x1="12" y1="2" x2="2.5" y2="7.5" stroke="#E535AB" stroke-width="1"/>
+          <line x1="12" y1="2" x2="21.5" y2="7.5" stroke="#E535AB" stroke-width="1"/>
+          <line x1="12" y1="22" x2="2.5" y2="16.5" stroke="#E535AB" stroke-width="1"/>
+          <line x1="12" y1="22" x2="21.5" y2="16.5" stroke="#E535AB" stroke-width="1"/>
+          <line x1="2.5" y1="7.5" x2="2.5" y2="16.5" stroke="#E535AB" stroke-width="1"/>
+          <line x1="21.5" y1="7.5" x2="21.5" y2="16.5" stroke="#E535AB" stroke-width="1"/>
+        </svg>
+        <span>GraphQL</span>
+      </div>
+
+      <!-- Retrofit -->
+      <div class="tech-pill">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <rect width="24" height="24" rx="5" fill="#00897B"/>
+          <path d="M5 8h14M5 12h10M5 16h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Retrofit</span>
+      </div>
+
+      <!-- KMM -->
+      <div class="tech-pill">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <rect width="24" height="24" rx="5" fill="#7F52FF"/>
+          <text x="3" y="17" font-size="9" font-weight="bold" fill="white" font-family="monospace">KMM</text>
+        </svg>
+        <span>KMM</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-12">
+        <p class="section-tag">// selected work</p>
+        <h2 class="section-title">Featured <span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Projects</span></h2>
+        <p class="section-sub">A curated selection of Android &amp; Flutter apps I've built — from fintech to social platforms.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+
+      <!-- P1 FinPay -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-thumb p1">
+            <svg class="thumb-svg" viewBox="0 0 72 72">
+              <rect width="72" height="72" rx="16" fill="#1565C0" opacity=".5"/>
+              <rect x="10" y="20" width="52" height="34" rx="6" fill="none" stroke="#4FC3F7" stroke-width="2.5"/>
+              <rect x="10" y="29" width="52" height="9" fill="#4FC3F7" opacity=".2"/>
+              <circle cx="22" cy="43" r="5" fill="#4FC3F7"/>
+              <rect x="32" y="39" width="22" height="7" rx="3" fill="#4FC3F7" opacity=".45"/>
+              <!-- Android logo top right -->
+              <g transform="translate(46,8) scale(.7)">
+                <path d="M17.523 15.342c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm-11.046 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zM17.78 8.5l1.94-3.36a.4.4 0 0 0-.693-.4L17.06 8.14A11.04 11.04 0 0 0 12 7c-1.79 0-3.48.43-4.96 1.14L5.07 4.74a.4.4 0 0 0-.693.4L6.32 8.5C3.73 10.05 2 12.82 2 16h20c0-3.18-1.73-5.95-4.22-7.5z" fill="#3DDC84"/>
+              </g>
+            </svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="p-tag t-android"><svg viewBox="0 0 24 24"><use href="#ico-android"/></svg>Android</span>
+              <span class="p-tag t-kotlin"><svg viewBox="0 0 24 24"><use href="#ico-kotlin"/></svg>Kotlin</span>
+              <span class="p-tag t-default">Jetpack</span>
+            </div>
+            <div class="project-title">FinPay — Digital Wallet</div>
+            <div class="project-desc">A secure P2P payment app with UPI integration, real-time transaction tracking, and biometric auth. 2M+ downloads.</div>
+            <div class="project-links">
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-playstore"/></svg>Play Store</a>
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-github"/></svg>GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P2 ShopWave -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-thumb p2">
+            <svg class="thumb-svg" viewBox="0 0 72 72">
+              <rect width="72" height="72" rx="16" fill="#1A237E" opacity=".5"/>
+              <path d="M14 22h44l-5 24H19L14 22z" fill="none" stroke="#54C5F8" stroke-width="2.5"/>
+              <circle cx="26" cy="52" r="4" fill="#54C5F8"/>
+              <circle cx="46" cy="52" r="4" fill="#54C5F8"/>
+              <path d="M10 15h5l5 14" stroke="#54C5F8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- Flutter logo -->
+              <g transform="translate(46,6) scale(.8)">
+                <path d="M14.314 0L2.3 12 6 15.7 21.684.012h-7.37z" fill="#54C5F8"/>
+                <path d="M14.3 15l-4.4 4.3 4.4 4.4 4.4-4.4z" fill="#29B6F6"/>
+              </g>
+            </svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="p-tag t-flutter"><svg viewBox="0 0 24 24"><use href="#ico-flutter"/></svg>Flutter</span>
+              <span class="p-tag t-default">Riverpod</span>
+              <span class="p-tag t-firebase"><svg viewBox="0 0 24 24"><use href="#ico-firebase"/></svg>Firebase</span>
+            </div>
+            <div class="project-title">ShopWave — E-Commerce</div>
+            <div class="project-desc">Full-featured cross-platform shopping app with AR try-on, AI recommendations, and real-time inventory sync.</div>
+            <div class="project-links">
+              <a href="#" class="p-link"><i class="bi bi-apple"></i> App Store</a>
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-playstore"/></svg>Play Store</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P3 VitalTrack -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-thumb p3">
+            <svg class="thumb-svg" viewBox="0 0 72 72">
+              <rect width="72" height="72" rx="16" fill="#0D47A1" opacity=".5"/>
+              <path d="M8 36 Q18 18 28 36 Q36 54 44 36 Q52 18 64 36" stroke="#29B6F6" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <circle cx="36" cy="55" r="4" fill="#29B6F6"/>
+              <g transform="translate(48,6) scale(.75)">
+                <path d="M17.78 8.5l1.94-3.36a.4.4 0 0 0-.693-.4L17.06 8.14A11.04 11.04 0 0 0 12 7c-1.79 0-3.48.43-4.96 1.14L5.07 4.74a.4.4 0 0 0-.693.4L6.32 8.5C3.73 10.05 2 12.82 2 16h20c0-3.18-1.73-5.95-4.22-7.5z" fill="#3DDC84"/>
+              </g>
+            </svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="p-tag t-android"><svg viewBox="0 0 24 24"><use href="#ico-android"/></svg>Android</span>
+              <span class="p-tag t-default">BLE</span>
+              <span class="p-tag t-ktor"><svg viewBox="0 0 24 24"><use href="#ico-ktor"/></svg>Ktor</span>
+            </div>
+            <div class="project-title">VitalTrack — Health Monitor</div>
+            <div class="project-desc">IoT-connected health app syncing with wearables via BLE. Tracks vitals, sleep, and activity with ML-powered insights.</div>
+            <div class="project-links">
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-playstore"/></svg>Play Store</a>
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-github"/></svg>GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P4 Convo -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-thumb p4">
+            <svg class="thumb-svg" viewBox="0 0 72 72">
+              <rect width="72" height="72" rx="16" fill="#1A0A3E" opacity=".6"/>
+              <rect x="10" y="16" width="52" height="32" rx="7" fill="none" stroke="#A78BFA" stroke-width="2.5"/>
+              <path d="M18 48l-5 10 10-5" fill="#A78BFA"/>
+              <rect x="18" y="26" width="22" height="5" rx="2.5" fill="#A78BFA" opacity=".6"/>
+              <rect x="18" y="35" width="15" height="5" rx="2.5" fill="#A78BFA" opacity=".35"/>
+              <g transform="translate(46,6) scale(.8)">
+                <path d="M14.314 0L2.3 12 6 15.7 21.684.012h-7.37z" fill="#54C5F8"/>
+                <path d="M14.3 15l-4.4 4.3 4.4 4.4 4.4-4.4z" fill="#29B6F6"/>
+              </g>
+            </svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="p-tag t-flutter"><svg viewBox="0 0 24 24"><use href="#ico-flutter"/></svg>Flutter</span>
+              <span class="p-tag t-default">WebSocket</span>
+              <span class="p-tag t-default">Bloc</span>
+            </div>
+            <div class="project-title">Convo — Chat Platform</div>
+            <div class="project-desc">Real-time encrypted messaging with end-to-end encryption, voice/video calls, and group channels. 500K active users.</div>
+            <div class="project-links">
+              <a href="#" class="p-link"><i class="bi bi-apple"></i> App Store</a>
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-playstore"/></svg>Play Store</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P5 EcoScan -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-thumb p5">
+            <svg class="thumb-svg" viewBox="0 0 72 72">
+              <rect width="72" height="72" rx="16" fill="#1B5E20" opacity=".6"/>
+              <circle cx="36" cy="30" r="12" fill="none" stroke="#69F0AE" stroke-width="2.5"/>
+              <line x1="36" y1="18" x2="36" y2="12" stroke="#69F0AE" stroke-width="2" stroke-linecap="round"/>
+              <line x1="44.5" y1="21.5" x2="49" y2="17" stroke="#69F0AE" stroke-width="2" stroke-linecap="round"/>
+              <line x1="27.5" y1="21.5" x2="23" y2="17" stroke="#69F0AE" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="36" cy="30" r="4" fill="#69F0AE"/>
+              <line x1="36" y1="42" x2="36" y2="58" stroke="#69F0AE" stroke-width="2" stroke-linecap="round"/>
+              <line x1="28" y1="58" x2="44" y2="58" stroke="#69F0AE" stroke-width="2" stroke-linecap="round"/>
+              <g transform="translate(48,6) scale(.75)">
+                <path d="M17.78 8.5l1.94-3.36a.4.4 0 0 0-.693-.4L6.32 8.5C3.73 10.05 2 12.82 2 16h20c0-3.18-1.73-5.95-4.22-7.5z" fill="#3DDC84"/>
+              </g>
+            </svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="p-tag t-android"><svg viewBox="0 0 24 24"><use href="#ico-android"/></svg>Android</span>
+              <span class="p-tag t-default">Maps SDK</span>
+              <span class="p-tag t-default">ML Kit</span>
+            </div>
+            <div class="project-title">EcoScan — Plant ID App</div>
+            <div class="project-desc">AI-powered plant identification using on-device ML Kit. Offline-first with 50K plant species database.</div>
+            <div class="project-links">
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-playstore"/></svg>Play Store</a>
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-github"/></svg>GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P6 FleetPro -->
+      <div class="col-md-6 col-lg-4">
+        <div class="project-card">
+          <div class="project-thumb p6">
+            <svg class="thumb-svg" viewBox="0 0 72 72">
+              <rect width="72" height="72" rx="16" fill="#1A237E" opacity=".6"/>
+              <rect x="8" y="28" width="32" height="18" rx="5" fill="none" stroke="#7986CB" stroke-width="2.5"/>
+              <rect x="40" y="33" width="22" height="13" rx="5" fill="none" stroke="#7986CB" stroke-width="2.5"/>
+              <path d="M40 39h5l4-6h11" stroke="#7986CB" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <circle cx="18" cy="50" r="5" fill="#7986CB"/>
+              <circle cx="52" cy="50" r="5" fill="#7986CB"/>
+              <g transform="translate(48,6) scale(.8)">
+                <path d="M14.314 0L2.3 12 6 15.7 21.684.012h-7.37z" fill="#54C5F8"/>
+                <path d="M14.3 15l-4.4 4.3 4.4 4.4 4.4-4.4z" fill="#29B6F6"/>
+              </g>
+            </svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="p-tag t-flutter"><svg viewBox="0 0 24 24"><use href="#ico-flutter"/></svg>Flutter</span>
+              <span class="p-tag t-kotlin"><svg viewBox="0 0 24 24"><use href="#ico-kotlin"/></svg>KMM</span>
+              <span class="p-tag t-ktor"><svg viewBox="0 0 24 24"><use href="#ico-ktor"/></svg>Ktor</span>
+            </div>
+            <div class="project-title">FleetPro — Fleet Manager</div>
+            <div class="project-desc">Enterprise fleet management with live GPS tracking, route optimization, and driver performance analytics dashboard.</div>
+            <div class="project-links">
+              <a href="#" class="p-link"><i class="bi bi-apple"></i> App Store</a>
+              <a href="#" class="p-link"><svg viewBox="0 0 24 24"><use href="#ico-playstore"/></svg>Play Store</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-5 mb-lg-0">
+        <p class="section-tag">// career journey</p>
+        <h2 class="section-title">9 Years of <span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Impact</span></h2>
+        <p class="section-sub">From junior dev to tech lead — a decade of building apps that millions use every day.</p>
+        <a href="about.html" class="btn-outline-custom d-inline-block mt-4">Full Story →</a>
+      </div>
+      <div class="col-lg-7 offset-lg-1">
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2022 — Present</div>
+            <div class="tl-role">Senior Mobile Architect</div>
+            <div class="tl-company">Freelance / Consulting</div>
+            <div class="tl-desc">Leading architecture decisions for fintech and health-tech clients. Mentoring teams, driving Kotlin Multiplatform adoption, and shipping production-grade Android &amp; Flutter apps at scale.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2019 — 2022</div>
+            <div class="tl-role">Lead Android Developer</div>
+            <div class="tl-company">TechNova Solutions, Pune</div>
+            <div class="tl-desc">Led a team of 6 developers building the company's flagship Android product. Migrated legacy codebase to MVVM + Clean Architecture, reducing crash rate by 80%.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2016 — 2019</div>
+            <div class="tl-role">Android Developer</div>
+            <div class="tl-company">AppCraft India, Mumbai</div>
+            <div class="tl-desc">Developed 15+ Android applications across e-commerce, healthcare, and logistics domains. Pioneered the team's adoption of Kotlin and MVVM patterns.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2015 — 2016</div>
+            <div class="tl-role">Junior Android Developer</div>
+            <div class="tl-company">StartupHub, Nagpur</div>
+            <div class="tl-desc">Built my first production apps, laying the foundation in Android fundamentals, REST API integration, and Agile development workflows.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-box">
+      <p class="section-tag" style="text-align:center;">// let's build something</p>
+      <h2 class="cta-title">Have a project in mind?</h2>
+      <p class="cta-sub">I'm available for freelance projects and full-time opportunities. Let's turn your idea into a world-class mobile app.</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="contact.html" class="btn-primary-custom">Start a Conversation</a>
+        <a href="about.html" class="btn-outline-custom">Learn More About Me</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-social">
+      <a href="#" class="social-btn"><i class="bi bi-github"></i></a>
+      <a href="#" class="social-btn"><i class="bi bi-linkedin"></i></a>
+      <a href="#" class="social-btn"><i class="bi bi-twitter-x"></i></a>
+      <a href="#" class="social-btn"><i class="bi bi-envelope"></i></a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Shubham Dekate — Built with passion &amp; Kotlin ☕</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.background =
+      window.scrollY > 60 ? 'rgba(10,10,15,.97)' : 'rgba(10,10,15,.85)';
+  });
+</script>
+</body>
+</html>
